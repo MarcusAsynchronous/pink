@@ -24,6 +24,7 @@ LIBS = -lpink \
 INCLUDE_PATH = -I../output/ \
 							 -I../output/include/ \
 							 -I../third/slash/include/ \
+							 -I../third/slash/output/ \
 							 -I../
 
 .PHONY: all clean version
