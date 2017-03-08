@@ -44,7 +44,7 @@ int main(int argc, char* argv[]) {
   ips.insert(argv[1]);
   ips.insert("127.0.0.1");
   pink::DispatchThread<MyHttpConn> *t;
-  t = new pink::DispatchThread<MyHttpConn>(ips, 8089, 1, workers_, 3000);
+  t = new pink::DispatchThread<MyHttpConn>(ips, 8079, 1, workers_, 3000);
   t->StartThread();
   sleep(10000);
 }

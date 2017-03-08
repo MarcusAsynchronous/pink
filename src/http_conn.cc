@@ -147,7 +147,7 @@ bool HttpRequest::ParseHeadFromArray(const char* data, const int size) {
       return false;
     }
     remain_size -= (line_end - line_start + 1);
-    line_start = line_end++;
+    line_start = ++line_end;
   }
   
   // Parse query parameter from GET url
