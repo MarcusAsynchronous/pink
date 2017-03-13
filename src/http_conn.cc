@@ -150,8 +150,8 @@ bool HttpRequest::ParseHeadFromArray(const char* data, const int size) {
     line_start = ++line_end;
   }
   
-  // Parse query parameter from GET url
-  if (method == "GET" && !ParseGetUrl()) {
+  // Parse query parameter from url
+  if (!ParseGetUrl()) {
     return false;
   }
   return true;
