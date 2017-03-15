@@ -20,6 +20,51 @@ namespace pink {
 static const uint32_t kHttpMaxMessage = 1024 * 1024 * 8;
 static const uint32_t kHttpMaxHeader = 1024 * 64;
 
+namespace {
+const char *message_phrase[] = {
+  "Continue",             // 100
+  "Switching Protocols",  // 101
+  "Processing",           // 102
+};
+
+const char *success_phrase[] = {
+  "OK",                             // 200
+  "Created",                        // 201
+  "Accepted",                       // 202
+  "Non-Authoritative Information",  // 203
+  "No Content",                     // 204
+  "Reset Content",                  // 205
+  "Partial Content",                // 206
+  "Multi-Status",                   // 207
+};
+
+const char *request_error[] = {
+  "Bad Request",                    // 400
+  "Unauthorized",                   // 401
+  "",                               // 402 reserve
+  "Forbidden",                      // 403
+  "Not Found",                      // 404
+  "Method Not Allowed",             // 405
+  "Not Acceptable",                 // 406
+  "Proxy Authentication Required",  // 407
+  "Request Timeout",                // 408
+  "Conflict",                       // 409
+};
+
+const char *server_error[] = {
+  "Internal Server Error",        // 500
+  "Not Implemented",              // 501
+  "Bad Gateway",                  // 502
+  "Service Unavailable",          // 503
+  "Gateway Timeout",              // 504
+  "HTTP Version Not Supported",   // 505
+  "Variant Also Negotiates",      // 506
+  "Insufficient Storage",         // 507
+  "Bandwidth Limit Exceeded",     // 508
+  "Not Extended",                 // 509
+};
+}
+
 HttpRequest::HttpRequest():
   method("GET"),
   path("/index") {
