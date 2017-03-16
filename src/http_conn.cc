@@ -20,50 +20,42 @@ namespace pink {
 static const uint32_t kHttpMaxMessage = 1024 * 1024 * 8;
 static const uint32_t kHttpMaxHeader = 1024 * 64;
 
-namespace {
-const char *message_phrase[] = {
-  "Continue",             // 100
-  "Switching Protocols",  // 101
-  "Processing",           // 102
-};
+static const std::map<int, std::string> http_status_map = {
+  {100, "Continue"},
+  {101, "Switching Protocols"},
+  {100, "Processing"},
 
-const char *success_phrase[] = {
-  "OK",                             // 200
-  "Created",                        // 201
-  "Accepted",                       // 202
-  "Non-Authoritative Information",  // 203
-  "No Content",                     // 204
-  "Reset Content",                  // 205
-  "Partial Content",                // 206
-  "Multi-Status",                   // 207
-};
+  {200, "OK"},
+  {201, "Created"},
+  {202, "Accepted"},
+  {203, "Non-Authoritative Information"},
+  {204, "No Content"},
+  {205, "Reset Content"},
+  {206, "Partial Content"},
+  {207, "Multi-Status"},
 
-const char *request_error[] = {
-  "Bad Request",                    // 400
-  "Unauthorized",                   // 401
-  "",                               // 402 reserve
-  "Forbidden",                      // 403
-  "Not Found",                      // 404
-  "Method Not Allowed",             // 405
-  "Not Acceptable",                 // 406
-  "Proxy Authentication Required",  // 407
-  "Request Timeout",                // 408
-  "Conflict",                       // 409
-};
+  {400, "Bad Request"},
+  {401, "Unauthorized"},
+  {402, ""},  // reserve
+  {403, "Forbidden"},
+  {404, "Not Found"},
+  {405, "Method Not Allowed"},
+  {406, "Not Acceptable"},
+  {407, "Proxy Authentication Required"},
+  {408, "Request Timeout"},
+  {409, "Conflict"},
 
-const char *server_error[] = {
-  "Internal Server Error",        // 500
-  "Not Implemented",              // 501
-  "Bad Gateway",                  // 502
-  "Service Unavailable",          // 503
-  "Gateway Timeout",              // 504
-  "HTTP Version Not Supported",   // 505
-  "Variant Also Negotiates",      // 506
-  "Insufficient Storage",         // 507
-  "Bandwidth Limit Exceeded",     // 508
-  "Not Extended",                 // 509
+  {500, "Internal Server Error"},
+  {501, "Not Implemented"},
+  {502, "Bad Gateway"},
+  {503, "Service Unavailable"},
+  {504, "Gateway Timeout"},
+  {505, "HTTP Version Not Supported"},
+  {506, "Variant Also Negotiates"},
+  {507, "Insufficient Storage"},
+  {508, "Bandwidth Limit Exceeded"},
+  {509, "Not Extended"},
 };
-}
 
 HttpRequest::HttpRequest():
   method("GET"),
@@ -271,20 +263,12 @@ int HttpResponse::SerializeBodyToArray(char* data, size_t size, int* pos) {
 }
 
 void HttpResponse::SetStatusCode(int code) {
+  assert((code >= 100 && code <= 102) ||
+         (code >= 200 && code <= 207) ||
+         (code >= 400 && code <= 409) ||
+         (code >= 500 && code <= 509));
   status_code_ = code;
-  if (code < 200) {
-    assert(code >= 100 && code <= 102);
-    reason_phrase_.assign(message_phrase[code - 100]);
-  } else if (code < 300) {
-    assert(code >= 200 && code <= 207);
-    reason_phrase_.assign(success_phrase[code - 200]);
-  } else if (code < 500) {
-    assert(code >= 400&& code <= 409);
-    reason_phrase_.assign(request_error[code - 400]);
-  } else {
-    assert(code >= 500 && code <= 509);
-    reason_phrase_.assign(server_error[code - 500]);
-  }
+  reason_phrase_.assign(http_status_map.at(code));
 }
 
 HttpConn::HttpConn(const int fd, const std::string &ip_port) :
