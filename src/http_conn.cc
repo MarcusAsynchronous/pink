@@ -196,9 +196,9 @@ bool HttpRequest::ParseHeadFromArray(const char* data, const int size) {
 
 bool HttpRequest::ParseBodyFromArray(const char* data, const int size) {
   content.append(data, size);
-  if (method == "POST") {
-    return ParseParameters(content);
-  }
+  // if (method == "POST") {
+  //   return ParseParameters(content);
+  // }
   return true;
 }
 

@@ -97,7 +97,6 @@ class HttpConn: public PinkConn {
   virtual ReadStatus GetRequest() override;
   virtual WriteStatus SendReply() override;
 
-
  private:
   virtual void DealMessage(const HttpRequest* req,
       HttpResponse* res) = 0;
