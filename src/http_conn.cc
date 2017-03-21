@@ -23,7 +23,7 @@ static const uint32_t kHttpMaxHeader = 1024 * 64;
 static const std::map<int, std::string> http_status_map = {
   {100, "Continue"},
   {101, "Switching Protocols"},
-  {100, "Processing"},
+  {102, "Processing"},
 
   {200, "OK"},
   {201, "Created"},
