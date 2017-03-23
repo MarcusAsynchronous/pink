@@ -44,6 +44,7 @@ static const std::map<int, std::string> http_status_map = {
   {407, "Proxy Authentication Required"},
   {408, "Request Timeout"},
   {409, "Conflict"},
+  {416, "Requested Range not satisfiable"},
 
   {500, "Internal Server Error"},
   {501, "Not Implemented"},
@@ -271,6 +272,7 @@ void HttpResponse::SetStatusCode(int code) {
   assert((code >= 100 && code <= 102) ||
          (code >= 200 && code <= 207) ||
          (code >= 400 && code <= 409) ||
+         (code == 416) ||
          (code >= 500 && code <= 509));
   status_code_ = code;
   reason_phrase_.assign(http_status_map.at(code));
