@@ -126,6 +126,11 @@ bool HttpRequest::ParseHeadLine(const char* data, int line_start,
 }
 
 bool HttpRequest::ParseGetUrl() {
+  // Format path
+  if (path.find(headers["host"]) != std::string::npos) {
+    // http://www.xxx.xxx/path/to
+    path.assign(path.substr(7 + headers["host"].size()));
+  }
   size_t n = path.find('?');
   if (n == std::string::npos) {
     return true; // no parameter
